@@ -27,14 +27,34 @@ python3 -m venv .venv
 # 2. Your Portkey key
 cp .env.example .env          # then edit .env and paste your key in
 #   PORTKEY_API_KEY=...
-#   A file named PORTKEY_API_KEY.env at the project root works too.
 
 # 3. Frontend dependencies
 cd frontend && npm install && cd ..
 ```
 
-The app starts without a key — the dashboard, the board and the till all work. Only
-the agent team needs one, and the Run button says so when it is missing.
+### Where the key has to go
+
+**Inside this project folder.** A key file sitting anywhere else — on your Desktop, in
+your home directory — is not read. Any one of these works, and later ones win:
+
+| | |
+|---|---|
+| `.env` at the project root | the usual choice |
+| `backend/.env` | |
+| `PORTKEY_API_KEY.env` at the project root | |
+| `backend/PORTKEY_API_KEY.env` | |
+| `export PORTKEY_API_KEY=...` in your shell | overrides all of the above |
+
+Each file is a plain `PORTKEY_API_KEY=your-key` line. None of them is committed — the
+`.gitignore` covers `.env`, `*.env` and `**/*.env`.
+
+### Running without a key
+
+The app starts fine without one. The dashboard loads, the board lists all three
+tickets, the till shows $3,400.00, and every MCP tool works — only the agent team
+needs a key. `GET /api/health` reports `agent_team_ready: false`, the **Call the team
+in** button is disabled, and `POST /api/tickets/{id}/run` answers `503` with the
+reason rather than failing obscurely.
 
 ---
 
