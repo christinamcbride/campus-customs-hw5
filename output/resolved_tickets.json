@@ -1,0 +1,370 @@
+{
+  "what_this_is": "The outcome of running all three Campus Customs tickets through the agent team on the dashboard. Assembled by scripts/collect_run_evidence.py from output/audit_trail.json and data/campus_customs_new.db; nothing is typed by hand.",
+  "shop_date": "2026-08-31",
+  "opening_balance": 3400.0,
+  "closing_balance": 160.0,
+  "tickets": [
+    {
+      "ticket_id": 101,
+      "subject": "Bulldog tee",
+      "requester": "Tauhid Zaman",
+      "final_status": "resolved",
+      "outcome": "Keep the ticket waiting for Christina McBride's decision on purchase-order approval #2. No order has been placed. Draft customer reply #3 is on the board and has not been sent.",
+      "rationale": "Ticket 101 requests one CC-TEE-WHITE tee in size S; inventory found zero on hand, a shortfall of one, and Bulldog Print Co can ship because invoice 501 is paid. The one-unit restock costs $8.00, has a five-day lead time, and is estimated to... [532 chars]",
+      "agents": [
+        {
+          "agent": "Boss",
+          "contribution": "Read the ticket, routed the work to the right specialists, and made the final call.",
+          "mcp_tools_used": [
+            "get_ticket",
+            "list_approvals",
+            "list_purchase_orders",
+            "list_message_drafts",
+            "update_ticket",
+            "get_cash_balance"
+          ],
+          "tool_calls": 20
+        },
+        {
+          "agent": "Inventory",
+          "contribution": "CC-TEE-WHITE size S has no units on hand, leaving a shortfall of 1 for ticket 101. Bulldog Print Co can ship now that invoice 501 is paid; a one-unit PO approval is queued at an exact total cost of $8.00, with a five-day lead time and expec... [383 chars]",
+          "mcp_tools_used": [
+            "check_stock",
+            "list_vendors",
+            "list_invoices",
+            "get_ticket",
+            "list_purchase_orders",
+            "list_approvals",
+            "request_purchase_order_approval"
+          ],
+          "tool_calls": 27
+        },
+        {
+          "agent": "Accounting",
+          "contribution": "Invoice 501 is marked paid, so it is not currently an open unpaid blocker to Bulldog Print Co shipping for ticket 101. Ticket notes say approval #1 for $840 was requested on August 31 to unblock the restock but payment was not executed; the... [316 chars]",
+          "mcp_tools_used": [
+            "list_invoices",
+            "list_vendors",
+            "get_cash_balance",
+            "list_approvals",
+            "get_ticket",
+            "request_payment_approval"
+          ],
+          "tool_calls": 13
+        },
+        {
+          "agent": "Customer Service",
+          "contribution": "Prepared an updated draft for Tauhid Zaman. It says size S is out of stock, the one-unit restock is pending human approval, September 5 is the expected arrival only if approved today, and no order has been placed.",
+          "mcp_tools_used": [
+            "get_ticket",
+            "list_message_drafts",
+            "check_stock",
+            "list_purchase_orders",
+            "draft_customer_message"
+          ],
+          "tool_calls": 19
+        }
+      ],
+      "delegations": [
+        "Boss -> Inventory",
+        "Boss -> Accounting",
+        "Boss -> Accounting",
+        "Boss -> Customer Service",
+        "Customer Service -> Inventory",
+        "Boss -> Inventory",
+        "Inventory -> Accounting",
+        "Boss -> Customer Service",
+        "Customer Service -> Inventory",
+        "Boss -> Inventory",
+        "Boss -> Customer Service"
+      ],
+      "human_approvals": [
+        {
+          "approval_id": 1,
+          "kind": "payment",
+          "amount": 840.0,
+          "summary": "Pay 840.00 from checking for invoice 501 \u2014 Overdue Bulldog Print Co invoice 501 for the rush reprint CC-TEE-WHITE S; paying it clears the vendor hold blocking the requested tee restock.",
+          "requested_by": "Accounting",
+          "status": "executed",
+          "decided_by": "Christina McBride",
+          "decided_at": "2026-08-31",
+          "decision_note": "Decided at the desk."
+        },
+        {
+          "approval_id": 2,
+          "kind": "purchase_order",
+          "amount": 8.0,
+          "summary": "Order 1 x CC-TEE-WHITE (S) from Bulldog Print Co at 8.00 each = 8.00, arriving 2026-09-05 \u2014 Ticket 101 needs one size S tee; shelf stock is zero, so request the one-unit shortfall for approval.",
+          "requested_by": "Inventory",
+          "status": "executed",
+          "decided_by": "Christina McBride",
+          "decided_at": "2026-08-31",
+          "decision_note": "Decided at the desk."
+        }
+      ],
+      "cash_effect": [
+        {
+          "amount": 840.0,
+          "pays_for": "invoice 501",
+          "balance_after": 2560.0,
+          "approved_by": "Christina McBride"
+        }
+      ],
+      "purchase_orders": [
+        {
+          "purchase_order_id": 1,
+          "sku": "CC-TEE-WHITE",
+          "size": "S",
+          "quantity": 1,
+          "total_cost": 8.0,
+          "expected_on": "2026-09-05",
+          "note": "Ordered, not received. Inventory is unchanged until delivery."
+        }
+      ],
+      "customer_drafts": [
+        {
+          "draft_id": 1,
+          "recipient": "Tauhid Zaman",
+          "subject": "Bulldog tee \u2014 size S",
+          "status": "on_board",
+          "note": "Held on the board. Nothing was sent."
+        },
+        {
+          "draft_id": 2,
+          "recipient": "Tauhid Zaman",
+          "subject": "Bulldog tee \u2014 size S",
+          "status": "on_board",
+          "note": "Held on the board. Nothing was sent."
+        },
+        {
+          "draft_id": 3,
+          "recipient": "Tauhid Zaman",
+          "subject": "Bulldog tee \u2014 size S",
+          "status": "on_board",
+          "note": "Held on the board. Nothing was sent."
+        }
+      ],
+      "usage": {
+        "requests": 55,
+        "tool_calls": 87,
+        "total_tokens": 162278
+      },
+      "run_ids": [
+        "6100e7332d62",
+        "5ee25301de08",
+        "ebc84a5107b8"
+      ]
+    },
+    {
+      "ticket_id": 102,
+      "subject": "Rent due",
+      "requester": "Elm City Properties",
+      "final_status": "resolved",
+      "outcome": "Requested human approval to pay Elm City Properties $2,400 from checking for lease 1 rent due September 2, 2026. The payment has not been made. Ticket remains waiting on Christina McBride\u2019s decision. Draft #5 is on the board for the landlor... [264 chars]",
+      "rationale": "Facilities confirmed rent is $2,400, due 2026-09-02, and not overdue as of the record date 2026-08-31. Checking held $2,560 uncommitted with $0 committed before this request, leaving $160 after reserving the $2,400 proposed payment. Approva... [382 chars]",
+      "agents": [
+        {
+          "agent": "Boss",
+          "contribution": "Read the ticket, routed the work to the right specialists, and made the final call.",
+          "mcp_tools_used": [
+            "get_ticket",
+            "get_cash_balance",
+            "list_approvals",
+            "list_message_drafts",
+            "update_ticket"
+          ],
+          "tool_calls": 15
+        },
+        {
+          "agent": "Facilities",
+          "contribution": "Lease 1 records $2,400 monthly rent due 2026-09-02, two days after the lease record\u2019s as-of date of 2026-08-31. No lease-specific issue is recorded that changes the rent handling; ticket 102 already says no rent approval is queued, so queue... [291 chars]",
+          "mcp_tools_used": [
+            "check_rent_due",
+            "list_approvals",
+            "get_ticket",
+            "get_cash_balance"
+          ],
+          "tool_calls": 13
+        },
+        {
+          "agent": "Accounting",
+          "contribution": "No prior approval existed for ticket 102. Checking had $2,560.00 uncommitted, sufficient for the $2,400.00 rent; I queued approval request 3 for Christina McBride. The payment has not been made and awaits her decision.",
+          "mcp_tools_used": [
+            "get_cash_balance",
+            "list_invoices",
+            "list_vendors",
+            "list_approvals",
+            "get_ticket",
+            "request_payment_approval"
+          ],
+          "tool_calls": 8
+        },
+        {
+          "agent": "Customer Service",
+          "contribution": "A corrected draft is on the board for Elm City Properties. It says payment is awaiting Christina McBride\u2019s human decision and has not been submitted or approved.",
+          "mcp_tools_used": [
+            "get_ticket",
+            "draft_customer_message",
+            "list_message_drafts",
+            "list_purchase_orders"
+          ],
+          "tool_calls": 8
+        }
+      ],
+      "delegations": [
+        "Boss -> Facilities",
+        "Facilities -> Accounting",
+        "Boss -> Customer Service",
+        "Customer Service -> Facilities",
+        "Boss -> Facilities",
+        "Boss -> Customer Service",
+        "Customer Service -> Facilities",
+        "Boss -> Customer Service",
+        "Boss -> Facilities",
+        "Boss -> Accounting"
+      ],
+      "human_approvals": [
+        {
+          "approval_id": 3,
+          "kind": "payment",
+          "amount": 2400.0,
+          "summary": "Pay 2400.00 from checking for rent 1 \u2014 Rent of $2,400 for lease 1 is due 2026-09-02 to Elm City Properties; request payment to meet the due date.",
+          "requested_by": "Accounting",
+          "status": "executed",
+          "decided_by": "Christina McBride",
+          "decided_at": "2026-08-31",
+          "decision_note": "Decided at the desk."
+        }
+      ],
+      "cash_effect": [
+        {
+          "amount": 2400.0,
+          "pays_for": "rent 1",
+          "balance_after": 160.0,
+          "approved_by": "Christina McBride"
+        }
+      ],
+      "purchase_orders": [],
+      "customer_drafts": [
+        {
+          "draft_id": 4,
+          "recipient": "Elm City Properties",
+          "subject": "Re: Rent due September 2",
+          "status": "on_board",
+          "note": "Held on the board. Nothing was sent."
+        },
+        {
+          "draft_id": 5,
+          "recipient": "Elm City Properties",
+          "subject": "Re: Rent due September 2",
+          "status": "on_board",
+          "note": "Held on the board. Nothing was sent."
+        }
+      ],
+      "usage": {
+        "requests": 43,
+        "tool_calls": 54,
+        "total_tokens": 123009
+      },
+      "run_ids": [
+        "72483a38fa65",
+        "215d5f2a1556",
+        "1ef693da6360"
+      ]
+    },
+    {
+      "ticket_id": 103,
+      "subject": "Bulk hoodie discount",
+      "requester": "Yale AI Club",
+      "final_status": "resolved",
+      "outcome": "Leave the request awaiting human review. The 12-unit restock request is in pending approval #4, but the requested order is not financeable from currently uncommitted cash. Do not confirm a discount or fulfillment to the club yet. Customer-s... [294 chars]",
+      "rationale": "Inventory found 8 medium CC-HOOD-NAVY hoodies on hand against 20 requested, a shortfall of 12. The restock request is $264 ($22 per unit), with expected arrival 2026-09-05. Checking has $160 uncommitted, so the request exceeds available unc... [595 chars]",
+      "agents": [
+        {
+          "agent": "Boss",
+          "contribution": "Read the ticket, routed the work to the right specialists, and made the final call.",
+          "mcp_tools_used": [
+            "get_ticket",
+            "list_approvals",
+            "get_cash_balance",
+            "list_purchase_orders",
+            "list_message_drafts",
+            "update_ticket"
+          ],
+          "tool_calls": 6
+        },
+        {
+          "agent": "Accounting",
+          "contribution": "For 20 CC-HOOD-NAVY hoodies, list price is $58 per unit and unit cost is $22. At list, that is $36 gross margin per unit (62.07%), with a $22 break-even floor; no proposed discount price was provided, so discounted margin and affordability ... [293 chars]",
+          "mcp_tools_used": [
+            "get_ticket",
+            "check_discount_margin"
+          ],
+          "tool_calls": 5
+        },
+        {
+          "agent": "Customer Service",
+          "contribution": "Drafted a reply to Yale AI Club stating that only 8 of the 20 requested medium navy hoodies are currently in stock, there is no confirmed restock date, and no bulk-discount quote is available while review is pending.",
+          "mcp_tools_used": [
+            "get_ticket",
+            "check_stock",
+            "list_message_drafts",
+            "list_purchase_orders",
+            "draft_customer_message"
+          ],
+          "tool_calls": 5
+        },
+        {
+          "agent": "Inventory",
+          "contribution": "CC-HOOD-NAVY size M has 8 on hand against 20 requested, leaving a shortfall of 12. Bulldog Print Co is the fitting apparel-reprint vendor, will ship, and has a 5-day lead time (arrival 2026-09-05); the 12-unit restock is queued for human ap... [366 chars]",
+          "mcp_tools_used": [
+            "check_stock",
+            "get_ticket",
+            "list_vendors",
+            "request_purchase_order_approval"
+          ],
+          "tool_calls": 4
+        }
+      ],
+      "delegations": [
+        "Boss -> Inventory",
+        "Boss -> Accounting",
+        "Boss -> Customer Service",
+        "Customer Service -> Accounting",
+        "Inventory -> Accounting"
+      ],
+      "human_approvals": [
+        {
+          "approval_id": 4,
+          "kind": "purchase_order",
+          "amount": 264.0,
+          "summary": "Order 12 x CC-HOOD-NAVY (M) from Bulldog Print Co at 22.00 each = 264.00, arriving 2026-09-05 \u2014 Ticket 103 requests 20 size M; 8 are on hand, leaving a shortfall of 12. Bulldog Print Co specializes in apparel reprint and can ship with no open invoice; request restock for the shortfall.",
+          "requested_by": "Inventory",
+          "status": "rejected",
+          "decided_by": "Christina McBride",
+          "decided_at": "2026-08-31",
+          "decision_note": "Decided at the desk."
+        }
+      ],
+      "cash_effect": [],
+      "purchase_orders": [],
+      "customer_drafts": [
+        {
+          "draft_id": 6,
+          "recipient": "Yale AI Club",
+          "subject": "20 medium navy hoodies",
+          "status": "on_board",
+          "note": "Held on the board. Nothing was sent."
+        }
+      ],
+      "usage": {
+        "requests": 21,
+        "tool_calls": 26,
+        "total_tokens": 60954
+      },
+      "run_ids": [
+        "d27801cd0f96"
+      ]
+    }
+  ]
+}

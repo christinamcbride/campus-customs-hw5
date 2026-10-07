@@ -1,0 +1,198 @@
+/*
+ * The Chapel Street Desk
+ *
+ * The scene this is designed for is a back room behind a print shop counter,
+ * mid-afternoon, daylight through one window — so the ground is warm paper
+ * rather than a dark console. Money is set in a ledger hand; the agents each
+ * have their own colour of ink, the way five people sharing one desk would
+ * initial their own notes.
+ *
+ * Self-hosted variable fonts, no network request at runtime.
+ */
+
+@import '@fontsource-variable/newsreader';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/roboto-mono';
+
+:root {
+  /* --- paper and ink --- */
+  --paper: #f6f3ec;
+  --paper-raised: #fffdf8;
+  --paper-sunk: #efeade;
+  --ink: #131a23;
+  --ink-2: #4a5464;        /* 6.4:1 on the sunk rails — secondary prose */
+  /* Measured against --paper-sunk, the darkest ground it ever sits on
+     (both rails). The lighter grounds are a bonus, not the test. */
+  --ink-3: #5f6775;        /* 4.75:1 on sunk — labels, timestamps */
+  --rule: #d9d1c1;
+  --rule-soft: #e8e2d4;
+
+  /* --- brass, the shop's one piece of hardware --- */
+  --brass: #7d5a0c;        /* 5.9:1 — safe for small text */
+  --brass-bright: #b2882b; /* rules and marks only */
+  --brass-tint: #f3ecd9;
+
+  /* --- state --- */
+  --go: #1c6442;
+  --go-tint: #e4f0e8;
+  --hold: #825200;
+  --hold-tint: #f8eed8;
+  --stop: #93301f;
+  --stop-tint: #fae8e3;
+
+  /* --- one colour of ink per agent --- */
+  --boss: #1c3a66;
+  --boss-tint: #e6ecf5;
+  --inventory: #1b6350;
+  --inventory-tint: #e2efea;
+  --accounting: #74470e;
+  --accounting-tint: #f4ead8;
+  --facilities: #563674;
+  --facilities-tint: #eee7f5;
+  --customer_service: #93402e;
+  --customer_service-tint: #f8e9e4;
+
+  /* --- type --- */
+  --display: 'Newsreader Variable', Georgia, serif;
+  --ui: 'Inter Variable', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --figures: 'Roboto Mono Variable', ui-monospace, Menlo, monospace;
+
+  /* --- depth: offset plus blur, never a flat halo --- */
+  --lift-1: 0 1px 2px rgba(19, 26, 35, 0.05), 0 2px 6px rgba(19, 26, 35, 0.04);
+  --lift-2: 0 2px 4px rgba(19, 26, 35, 0.06), 0 8px 20px rgba(19, 26, 35, 0.07);
+  --lift-3: 0 4px 10px rgba(19, 26, 35, 0.08), 0 18px 44px rgba(19, 26, 35, 0.1);
+
+  /* --- motion --- */
+  --settle: cubic-bezier(0.16, 1, 0.3, 1);
+  --quick: 140ms var(--settle);
+  --easy: 320ms var(--settle);
+
+  --radius: 6px;
+  --radius-sm: 4px;
+  --rail-left: 19rem;
+  --rail-right: 22rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--ui);
+  font-size: 15px;
+  line-height: 1.58;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* The grain of the paper. Fixed, so it does not swim when a panel scrolls. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+  background-image: radial-gradient(
+    rgba(120, 102, 70, 0.1) 0.5px,
+    transparent 0.5px
+  );
+  background-size: 3px 3px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+  margin: 0;
+}
+
+/* Figures are set in the ledger hand and must line up down a column. */
+.figures,
+.money {
+  font-family: var(--figures);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+/* --- the surfaces the browser draws, themed rather than left default --- */
+
+::selection {
+  background: var(--brass-tint);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--boss);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+input,
+textarea {
+  caret-color: var(--brass);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--rule);
+  border-radius: 10px;
+  border: 3px solid var(--paper);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #c7bda7;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

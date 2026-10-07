@@ -1,0 +1,367 @@
+{
+  "what_this_is": "Evidence that the three Campus Customs MCP tools run through the configuration in .mcp.json and return values that match the working database. Captured by scripts/mcp_smoke.py; nothing here is typed by hand.",
+  "shop_date": "2026-08-31",
+  "mcp_configuration": {
+    "file": ".mcp.json",
+    "server_name": "campus-customs-ops",
+    "transport": "stdio",
+    "command": ".venv/bin/python",
+    "args": [
+      "mcp_server/server.py"
+    ],
+    "launched_from": "/Users/christinamcbride/Desktop/yale mba/courses/MGT 409/HW/HW5",
+    "note": "The server was started as a real subprocess with this exact command, the same way Claude Code starts it."
+  },
+  "database": {
+    "working_copy": "data/campus_customs_new.db",
+    "shop_data_sha1_before_run": "2b8f850f69f6331912820bf5570fee7422a746c7",
+    "shop_data_sha1_after_run": "2b8f850f69f6331912820bf5570fee7422a746c7",
+    "unchanged_by_run": true,
+    "original": "data/campus_customs.db",
+    "original_file_sha1_before_run": "f447ca6a2766a90f3c1f81215c8f774ab109ea4c",
+    "original_file_sha1_after_run": "f447ca6a2766a90f3c1f81215c8f774ab109ea4c",
+    "original_untouched": true,
+    "note": "The working copy is measured by the contents of the nine original shop tables, not by the file bytes: opening it creates the three empty agent-team tables (approvals, purchase_orders, message_drafts), which changes the file without changing any shop value. The original is measured by file hash and must never move."
+  },
+  "tools_advertised_by_server": [
+    "check_stock",
+    "check_rent_due",
+    "check_discount_margin",
+    "list_tickets",
+    "get_ticket",
+    "update_ticket",
+    "list_vendors",
+    "list_invoices",
+    "get_cash_balance",
+    "list_approvals",
+    "request_payment_approval",
+    "request_purchase_order_approval",
+    "decide_approval",
+    "record_payment",
+    "place_purchase_order",
+    "draft_customer_message",
+    "list_message_drafts",
+    "list_purchase_orders"
+  ],
+  "tests": [
+    {
+      "ticket": 101,
+      "ticket_subject": "Bulldog tee \u2014 Tauhid Zaman needs CC-TEE-WHITE in size S",
+      "request": "Ticket 101 asks for one Classic Bulldog Tee in size S. Do we have it on the shelf, and if not how many are we short?",
+      "tool": "check_stock",
+      "arguments": {
+        "sku": "CC-TEE-WHITE",
+        "size": "S",
+        "quantity_requested": 1
+      },
+      "tool_output": {
+        "sku": "CC-TEE-WHITE",
+        "product_name": "Classic Bulldog Tee",
+        "size": "S",
+        "quantity_on_hand": 0,
+        "location": "Aisle B",
+        "quantity_requested": 1,
+        "can_fill_from_stock": false,
+        "shortfall": 1,
+        "as_of": "2026-08-31"
+      },
+      "verification": {
+        "method": "independent SQL against data/campus_customs_new.db",
+        "sql": [
+          "SELECT name, qty, location FROM inventory WHERE sku='CC-TEE-WHITE' AND size='S'",
+          "SELECT date_today FROM desk LIMIT 1"
+        ],
+        "rows_returned_by_sql": {
+          "inventory": {
+            "name": "Classic Bulldog Tee",
+            "qty": 0,
+            "location": "Aisle B"
+          },
+          "desk": {
+            "date_today": "2026-08-31"
+          }
+        },
+        "checks": [
+          {
+            "field": "product_name",
+            "tool_returned": "Classic Bulldog Tee",
+            "database_contains": "Classic Bulldog Tee",
+            "match": true
+          },
+          {
+            "field": "quantity_on_hand",
+            "tool_returned": 0,
+            "database_contains": 0,
+            "match": true
+          },
+          {
+            "field": "location",
+            "tool_returned": "Aisle B",
+            "database_contains": "Aisle B",
+            "match": true
+          },
+          {
+            "field": "as_of",
+            "tool_returned": "2026-08-31",
+            "database_contains": "2026-08-31",
+            "match": true
+          },
+          {
+            "field": "shortfall",
+            "tool_returned": 1,
+            "database_contains": 1,
+            "match": true
+          },
+          {
+            "field": "can_fill_from_stock",
+            "tool_returned": false,
+            "database_contains": false,
+            "match": true
+          }
+        ],
+        "all_match": true,
+        "note": "The shelf holds 0, so ticket 101 cannot be filled from stock. shortfall and can_fill_from_stock are derived from the qty column, not stored, so both are recomputed here from the row."
+      }
+    },
+    {
+      "ticket": 102,
+      "ticket_subject": "Rent due \u2014 Elm City Properties, lease 1",
+      "request": "Ticket 102 is an email from the landlord saying rent is due in 2 days. What does our own lease record say we owe, and when is it actually due against the shop's date?",
+      "tool": "check_rent_due",
+      "arguments": {
+        "lease_id": 1
+      },
+      "tool_output": {
+        "result": [
+          {
+            "lease_id": 1,
+            "space_name": "Chapel Street shop",
+            "landlord": "Elm City Properties",
+            "monthly_rent": 2400.0,
+            "next_due": "2026-09-02",
+            "as_of": "2026-08-31",
+            "days_until_due": 2,
+            "is_overdue": false,
+            "notes": null
+          }
+        ]
+      },
+      "verification": {
+        "method": "independent SQL against data/campus_customs_new.db",
+        "sql": [
+          "SELECT space_name, landlord, monthly_rent, next_due FROM leases WHERE id=1",
+          "SELECT date_today FROM desk LIMIT 1"
+        ],
+        "rows_returned_by_sql": {
+          "leases": {
+            "space_name": "Chapel Street shop",
+            "landlord": "Elm City Properties",
+            "monthly_rent": 2400.0,
+            "next_due": "2026-09-02"
+          },
+          "desk": {
+            "date_today": "2026-08-31"
+          }
+        },
+        "checks": [
+          {
+            "field": "space_name",
+            "tool_returned": "Chapel Street shop",
+            "database_contains": "Chapel Street shop",
+            "match": true
+          },
+          {
+            "field": "landlord",
+            "tool_returned": "Elm City Properties",
+            "database_contains": "Elm City Properties",
+            "match": true
+          },
+          {
+            "field": "monthly_rent",
+            "tool_returned": 2400.0,
+            "database_contains": 2400.0,
+            "match": true
+          },
+          {
+            "field": "next_due",
+            "tool_returned": "2026-09-02",
+            "database_contains": "2026-09-02",
+            "match": true
+          },
+          {
+            "field": "as_of",
+            "tool_returned": "2026-08-31",
+            "database_contains": "2026-08-31",
+            "match": true
+          },
+          {
+            "field": "days_until_due",
+            "tool_returned": 2,
+            "database_contains": 2,
+            "match": true
+          },
+          {
+            "field": "is_overdue",
+            "tool_returned": false,
+            "database_contains": false,
+            "match": true
+          }
+        ],
+        "all_match": true,
+        "note": "days_until_due is next_due minus desk.date_today (2026-09-02 - 2026-08-31 = 2), which confirms the landlord's claim of 2 days against the shop's own calendar rather than the real one."
+      }
+    },
+    {
+      "ticket": 103,
+      "ticket_subject": "Bulk hoodie discount \u2014 Yale AI Club wants 20 CC-HOOD-NAVY in M",
+      "request": "Ticket 103 asks for a bulk discount on 20 navy hoodies. What is our cost and list price, and if we offered 20% off at $46.40 a unit, would that still clear cost?",
+      "tool": "check_discount_margin",
+      "arguments": {
+        "sku": "CC-HOOD-NAVY",
+        "quantity": 20,
+        "proposed_unit_price": 46.4
+      },
+      "tool_output": {
+        "sku": "CC-HOOD-NAVY",
+        "quantity": 20,
+        "unit_cost": 22.0,
+        "list_price": 58.0,
+        "list_total": 1160.0,
+        "list_margin_per_unit": 36.0,
+        "list_margin_percent": 62.07,
+        "proposed_unit_price": 46.4,
+        "proposed_total": 928.0,
+        "proposed_margin_per_unit": 24.4,
+        "proposed_margin_percent": 52.59,
+        "discount_percent_off_list": 20.0,
+        "covers_unit_cost": true,
+        "break_even_unit_price": 22.0
+      },
+      "verification": {
+        "method": "independent SQL against data/campus_customs_new.db",
+        "sql": [
+          "SELECT unit_cost, list_price FROM pricing WHERE sku='CC-HOOD-NAVY'"
+        ],
+        "rows_returned_by_sql": {
+          "pricing": {
+            "unit_cost": 22.0,
+            "list_price": 58.0
+          }
+        },
+        "checks": [
+          {
+            "field": "unit_cost",
+            "tool_returned": 22.0,
+            "database_contains": 22.0,
+            "match": true
+          },
+          {
+            "field": "list_price",
+            "tool_returned": 58.0,
+            "database_contains": 58.0,
+            "match": true
+          },
+          {
+            "field": "break_even_unit_price",
+            "tool_returned": 22.0,
+            "database_contains": 22.0,
+            "match": true
+          },
+          {
+            "field": "list_total",
+            "tool_returned": 1160.0,
+            "database_contains": 1160.0,
+            "match": true
+          },
+          {
+            "field": "list_margin_per_unit",
+            "tool_returned": 36.0,
+            "database_contains": 36.0,
+            "match": true
+          },
+          {
+            "field": "list_margin_percent",
+            "tool_returned": 62.07,
+            "database_contains": 62.07,
+            "match": true
+          },
+          {
+            "field": "proposed_total",
+            "tool_returned": 928.0,
+            "database_contains": 928.0,
+            "match": true
+          },
+          {
+            "field": "proposed_margin_per_unit",
+            "tool_returned": 24.4,
+            "database_contains": 24.4,
+            "match": true
+          },
+          {
+            "field": "discount_percent_off_list",
+            "tool_returned": 20.0,
+            "database_contains": 20.0,
+            "match": true
+          },
+          {
+            "field": "covers_unit_cost",
+            "tool_returned": true,
+            "database_contains": true,
+            "match": true
+          }
+        ],
+        "all_match": true,
+        "note": "Only unit_cost and list_price are stored. Every other figure is arithmetic over those two columns and is recomputed here from the raw row to confirm the tool is not inventing margins."
+      }
+    }
+  ],
+  "honest_answer_checks": [
+    {
+      "tool": "check_stock",
+      "arguments": {
+        "sku": "CC-TEE-WHITE",
+        "size": "XXL"
+      },
+      "expectation": "A size the shop does not carry must not come back as 0 on hand.",
+      "refused": true,
+      "error_message": "CC-TEE-WHITE is not stocked in size XXL. Sizes carried: L, M, S, XL."
+    },
+    {
+      "tool": "check_stock",
+      "arguments": {
+        "sku": "CC-SCARF-NAVY",
+        "size": "OS"
+      },
+      "expectation": "A SKU that is not in the inventory table at all must be refused.",
+      "refused": true,
+      "error_message": "There is no SKU 'CC-SCARF-NAVY' in the inventory table."
+    },
+    {
+      "tool": "check_rent_due",
+      "arguments": {
+        "lease_id": 99
+      },
+      "expectation": "A lease the shop does not hold must not return an empty obligation.",
+      "refused": true,
+      "error_message": "There is no lease with id 99."
+    },
+    {
+      "tool": "check_discount_margin",
+      "arguments": {
+        "sku": "CC-SCARF-NAVY",
+        "quantity": 5
+      },
+      "expectation": "A SKU with no pricing row must not be given an estimated margin.",
+      "refused": true,
+      "error_message": "There is no pricing row for SKU 'CC-SCARF-NAVY'."
+    }
+  ],
+  "summary": {
+    "tools_tested": 3,
+    "all_values_match_database": true,
+    "unknown_inputs_refused": 4,
+    "unknown_inputs_tried": 4,
+    "working_copy_unchanged": true,
+    "original_untouched": true
+  }
+}

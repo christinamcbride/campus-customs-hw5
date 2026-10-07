@@ -1,0 +1,19 @@
+# Virtual environment
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Secrets — never commit API keys
+.env
+*.env
+**/*.env
+!.env.example
+
+# macOS
+.DS_Store
+
+# Frontend
+node_modules/
+dist/

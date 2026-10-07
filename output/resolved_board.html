@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campus Customs — the board, resolved</title>
+<style>
+  :root {
+    --ink: #131a23; --ink-2: #4a5464; --ink-3: #5f6775;
+    --paper: #f6f3ec; --card: #fffdf8; --sunk: #efeade;
+    --rule: #d9d1c1; --rule-soft: #e8e2d4;
+    --navy: #1c3a66; --brass: #7d5a0c; --go: #1c6442;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0 1.5rem 5rem; background: var(--paper); color: var(--ink);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 64rem; margin: 0 auto; }
+  header.top { padding: 3rem 0 1.5rem; border-bottom: 1px solid var(--rule); }
+  h1 {
+    font-family: Georgia, "Iowan Old Style", serif; font-size: clamp(1.8rem, 3.6vw, 2.4rem);
+    margin: 0 0 .6rem; letter-spacing: -.015em; line-height: 1.12;
+  }
+  .standfirst { margin: 0; max-width: 48rem; color: var(--ink-2); font-size: 1.02rem; }
+  .summary {
+    display: flex; flex-wrap: wrap; gap: 1px; background: var(--rule);
+    border: 1px solid var(--rule); border-radius: 5px; overflow: hidden; margin: 1.75rem 0 0;
+  }
+  .summary > div { flex: 1 1 10rem; background: var(--card); padding: .85rem 1rem; }
+  .summary .k {
+    display: block; font-size: .64rem; letter-spacing: .11em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 650;
+  }
+  .summary .v {
+    display: block; font-family: var(--mono); font-size: 1.12rem; margin-top: .15rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .summary .v.good { color: var(--go); }
+  nav.jump {
+    display: flex; gap: .5rem; flex-wrap: wrap; margin: 1.5rem 0 0;
+    font-size: .86rem;
+  }
+  nav.jump a {
+    color: var(--navy); text-decoration: none; border: 1px solid var(--rule);
+    background: var(--card); padding: .35rem .8rem; border-radius: 4px;
+  }
+  nav.jump a:hover { border-color: var(--navy); }
+
+  .card { margin: 3.5rem 0 0; scroll-margin-top: 1rem; }
+  .card > header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 1.5rem; flex-wrap: wrap; padding-bottom: .9rem;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  h2 { font-family: Georgia, serif; font-size: 1.4rem; margin: 0; letter-spacing: -.01em; }
+  .who { margin: .2rem 0 0; font-family: var(--mono); font-size: .78rem; color: var(--ink-3); }
+  .stamp {
+    font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--go); background: #e4f0e8; border: 1px solid #bcd9c8;
+    padding: .25rem .6rem; border-radius: 3px; white-space: nowrap;
+  }
+  figure { margin: 1.4rem 0 0; }
+  figure img {
+    display: block; width: 100%; height: auto; border: 1px solid var(--rule);
+    border-radius: 6px; background: var(--card);
+    box-shadow: 0 2px 4px rgba(19,26,35,.06), 0 10px 28px rgba(19,26,35,.08);
+  }
+  figcaption {
+    margin: .9rem 0 0; font-size: .92rem; color: var(--ink-2); max-width: 72ch;
+  }
+  figcaption b { color: var(--ink); }
+  dl.facts {
+    margin: 1.5rem 0 0; display: grid; gap: 0;
+    border: 1px solid var(--rule); border-radius: 5px; overflow: hidden; background: var(--card);
+  }
+  dl.facts > div {
+    display: grid; grid-template-columns: 13rem minmax(0,1fr); gap: 1rem;
+    padding: .55rem .95rem; border-bottom: 1px solid var(--rule-soft); font-size: .88rem;
+  }
+  dl.facts > div:last-child { border-bottom: none; }
+  dl.facts dt { color: var(--ink-3); font-size: .78rem; padding-top: .1rem; }
+  dl.facts dd { margin: 0; }
+  dl.facts dd.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .note {
+    margin: 1rem 0 0; font-size: .88rem; color: var(--ink-3);
+    background: var(--sunk); border: 1px solid var(--rule-soft);
+    border-radius: 5px; padding: .75rem .95rem;
+  }
+  footer {
+    margin-top: 4rem; padding-top: 1.25rem; border-top: 1px solid var(--rule);
+    font-size: .82rem; color: var(--ink-3);
+  }
+  code { font-family: var(--mono); font-size: .85em; background: #f1ece2; padding: .1em .35em; border-radius: 3px; }
+  @media (max-width: 640px) {
+    dl.facts > div { grid-template-columns: 1fr; gap: .1rem; }
+  }
+  ::selection { background: #f3ecd9; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <h1>The board, resolved</h1>
+  <p class="standfirst">
+    The Campus Customs dashboard after each of the three tickets was worked by the agent
+    team and closed at the desk. Every screenshot is the running React dashboard at
+    <code>localhost:5173</code>, captured in the browser — not a mockup.
+  </p>
+
+  <div class="summary">
+    <div><span class="k">Tickets resolved</span><span class="v good">3 / 3</span></div>
+    <div><span class="k">Opening balance</span><span class="v">$3,400.00</span></div>
+    <div><span class="k">Closing balance</span><span class="v">$160.00</span></div>
+    <div><span class="k">Paid out</span><span class="v">$3,240.00</span></div>
+    <div><span class="k">Moved by an agent</span><span class="v good">$0.00</span></div>
+  </div>
+
+  <nav class="jump">
+    <a href="#t101">Ticket 101</a>
+    <a href="#t102">Ticket 102</a>
+    <a href="#t103">Ticket 103</a>
+    <a href="desk_tickets.html">Plan vs. actual &rarr;</a>
+    <a href="resolved_tickets.json">resolved_tickets.json</a>
+  </nav>
+</header>
+
+
+<section class="card" id="t101">
+  <header>
+    <div>
+      <h2>Ticket 101 &mdash; Bulldog tee</h2>
+      <p class="who">Tauhid Zaman &middot; customer order</p>
+    </div>
+    <span class="stamp">resolved</span>
+  </header>
+
+  <figure>
+    <img src="board_images/ticket-101-resolved.jpg"
+         alt="The Campus Customs dashboard with ticket 101 resolved: the board on the left, the agent activity feed in the middle, and the till and approvals on the right."
+         loading="lazy" width="1500">
+    <figcaption>The board shows <b>#101 resolved</b> and the till at <b>$2,560.00</b> — $3,400.00 less the $840.00 invoice the team queued and a person approved. The right rail records both human decisions on this ticket: the $840.00 payment marked <i>paid</i> and the $8.00 restock marked <i>ordered</i>, each stamped <i>approved by Christina McBride</i>. The feed beneath shows the boss handing the ticket to Inventory first, exactly as the plan predicted.</figcaption>
+  </figure>
+
+  <dl class="facts">
+    <div><dt>Agents that worked it</dt><dd>Boss, Inventory, Accounting, Customer Service</dd></div>
+    <div><dt>Delegation hops</dt><dd>11</dd></div>
+    <div><dt>Human approvals</dt><dd>#1 payment $840.00 &mdash; executed, #2 purchase order $8.00 &mdash; executed</dd></div>
+    <div><dt>Cash moved</dt><dd class="num">$840.00</dd></div>
+    <div><dt>Cost of the run</dt><dd>3 runs &middot; 87 tool calls &middot; 162,278 tokens</dd></div>
+  </dl>
+
+  <p class="note">Took three runs. The first queued the payment that unblocked the vendor; the second read the shop and failed to order; the third ordered once the Inventory prompt was tightened.</p>
+</section>
+<section class="card" id="t102">
+  <header>
+    <div>
+      <h2>Ticket 102 &mdash; Rent due</h2>
+      <p class="who">Elm City Properties &middot; rent notice</p>
+    </div>
+    <span class="stamp">resolved</span>
+  </header>
+
+  <figure>
+    <img src="board_images/ticket-102-resolved.jpg"
+         alt="The Campus Customs dashboard with ticket 102 resolved: the board on the left, the agent activity feed in the middle, and the till and approvals on the right."
+         loading="lazy" width="1500">
+    <figcaption><b>#102 resolved</b>, two of three done, and the till down to <b>$160.00</b> after the $2,400.00 rent payment. <i>Already decided</i> now holds all three executed approvals. The feed shows <code>Boss &rarr; Facilities</code> with the task quoted verbatim — the handoff the plan called for, because a landlord's email is a claim until the lease record confirms it.</figcaption>
+  </figure>
+
+  <dl class="facts">
+    <div><dt>Agents that worked it</dt><dd>Boss, Facilities, Accounting, Customer Service</dd></div>
+    <div><dt>Delegation hops</dt><dd>10</dd></div>
+    <div><dt>Human approvals</dt><dd>#3 payment $2,400.00 &mdash; executed</dd></div>
+    <div><dt>Cash moved</dt><dd class="num">$2,400.00</dd></div>
+    <div><dt>Cost of the run</dt><dd>3 runs &middot; 54 tool calls &middot; 123,009 tokens</dd></div>
+  </dl>
+
+  <p class="note">Also took three runs. Facilities analysed the rent correctly twice and queued nothing both times; an output validator now rejects a report that says a person must act while queueing nothing.</p>
+</section>
+<section class="card" id="t103">
+  <header>
+    <div>
+      <h2>Ticket 103 &mdash; Bulk hoodie discount</h2>
+      <p class="who">Yale AI Club &middot; discount request</p>
+    </div>
+    <span class="stamp">resolved</span>
+  </header>
+
+  <figure>
+    <img src="board_images/ticket-103-resolved.jpg"
+         alt="The Campus Customs dashboard with ticket 103 resolved: the board on the left, the agent activity feed in the middle, and the till and approvals on the right."
+         loading="lazy" width="1500">
+    <figcaption><b>3/3 done</b> — every ticket on the board carries the resolved stamp, the hatched 'filed' texture and the softened type. The till holds at <b>$160.00</b>, because this ticket's only money request was a $264.00 purchase order and it was <b>rejected</b>: the shop will not commit to goods it cannot pay for. The feed shows the boss opening with <code>Boss &rarr; Inventory</code>.</figcaption>
+  </figure>
+
+  <dl class="facts">
+    <div><dt>Agents that worked it</dt><dd>Boss, Accounting, Customer Service, Inventory</dd></div>
+    <div><dt>Delegation hops</dt><dd>5 (plus 1 refused as a loop)</dd></div>
+    <div><dt>Human approvals</dt><dd>#4 purchase order $264.00 &mdash; rejected</dd></div>
+    <div><dt>Cash moved</dt><dd class="num">$0.00</dd></div>
+    <div><dt>Cost of the run</dt><dd>1 run &middot; 26 tool calls &middot; 60,954 tokens</dd></div>
+  </dl>
+
+  <p class="note">The only ticket resolved in a single run — and the one where the plan's prediction was wrong. It expected Accounting first; Inventory first was the better call.</p>
+</section>
+
+<footer>
+  Campus Customs Multi-Agent Operations &middot; MGT 409 Homework 5. Screenshots taken from
+  the running dashboard on shop date 2026-08-31. The closing balance of
+  $160.00 matches <code>cash_accounts</code> in
+  <code>data/campus_customs_new.db</code>; the original <code>data/campus_customs.db</code>
+  is untouched. Full ledger and reconciliation in
+  <a href="desk_tickets.html">desk_tickets.html</a>, Cash tab.
+</footer>
+
+</div>
+</body>
+</html>
