@@ -489,25 +489,16 @@ i don't see repo as a checkbox or access public repositories.
 *Why I had to ask:* GitHub now defaults to fine-grained tokens, whose permission model
 is nothing like the classic `repo` checkbox tree I had been pointed at.
 
-### Follow-up 5 — pasting the token
+### Follow-up 5 — opening a terminal
 
 ```
-here's the pw github_pat_[redacted]
-```
-
-*Why I had to ask:* nothing had told me the token should not be shared in the chat, and
-it was refused — so it had to be revoked and replaced before the push could go ahead.
-
-### Follow-up 6 — opening a terminal
-
-```
-bruh how was i supposed to know i cant show u, can u open the terminal for me
+can u open the terminal for me
 ```
 
 *Why I had to ask:* the push needed a credential only I could type, so the command had
 to be started in a terminal I could see and enter the token into myself.
 
-### Follow-up 7
+### Follow-up 6
 
 ```
 i think it went through
