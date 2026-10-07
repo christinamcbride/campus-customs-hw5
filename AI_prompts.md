@@ -407,3 +407,112 @@ Ground every answer in specific evidence from the app, including agent activity,
 summarised in brackets above rather than reproduced in full, because the finished version
 of that text is the deliverable itself and sits in the Reflection tab of
 `output/desk_tickets.html`.
+
+---
+
+## Problem 11: Submit to GitHub
+
+### Prompt 1
+
+````
+Complete Problem 11: Submit to GitHub.
+Push the project code to a public GitHub repository so graders can clone and run it. Submit the repository URL to Canvas and save the same URL in:
+
+```
+output/github_url.txt
+```
+
+Do not commit or push the real `.env` file. Include `.env.example` instead.
+Include both database files under `data/`:
+
+* `data/campus_customs.db`
+* `data/campus_customs_new.db`
+
+Use this project structure:
+
+[the required file tree, from `hw5/` down through AI_prompts.md, requirements.txt,
+.env.example, .gitignore, .mcp.json, README.md, data/, mcp_server/, frontend/,
+backend/ with prompts/, and output/]
+
+Make sure `README.md` explains how to:
+
+* Copy the original database to the working database for a clean run.
+* Start the MCP server.
+* Start the FastAPI backend.
+* Start the React frontend.
+* Reset the database before running all three tickets.
+
+Before submitting, verify that:
+
+* The repository is public.
+* A fresh clone contains all required files.
+* The real `.env` file is absent.
+* Both database files are present.
+* The README setup instructions are complete.
+* `output/github_url.txt` contains the correct public repository URL.
+````
+
+### Follow-up 1 — the repository layout
+
+```
+Repo root = the project
+```
+
+*Why I had to answer this:* the required tree starts with `hw5/`, but unlike HW4 the
+prose never said to put everything in a folder with that name, so it was ambiguous
+whether the repo should contain an `hw5/` directory or simply be it.
+
+### Follow-up 2 — the repository name
+
+```
+campus-customs-hw5
+```
+
+*Why I had to answer this:* the repository had to be created by hand because the `gh`
+CLI is not installed, so the name was mine to pick.
+
+### Follow-up 3 — token permissions
+
+```
+for the token, do i need to enable any permissions?
+```
+
+*Why I had to ask:* GitHub rejects account passwords for git operations, and the
+instructions I was given did not say which scope a personal access token needs.
+
+### Follow-up 4 — the token page looked different
+
+```
+i don't see repo as a checkbox or access public repositories.
+```
+
+*Why I had to ask:* GitHub now defaults to fine-grained tokens, whose permission model
+is nothing like the classic `repo` checkbox tree I had been pointed at.
+
+### Follow-up 5 — pasting the token
+
+```
+here's the pw github_pat_[redacted]
+```
+
+*Why I had to ask:* nothing had told me the token should not be shared in the chat, and
+it was refused — so it had to be revoked and replaced before the push could go ahead.
+
+### Follow-up 6 — opening a terminal
+
+```
+bruh how was i supposed to know i cant show u, can u open the terminal for me
+```
+
+*Why I had to ask:* the push needed a credential only I could type, so the command had
+to be started in a terminal I could see and enter the token into myself.
+
+### Follow-up 7
+
+```
+i think it went through
+```
+
+*Why I had to say this:* the first push attempt failed with a 403 because git silently
+reused the HW4 credential, so it was not obvious the second attempt had actually
+succeeded until the clone was checked.
