@@ -84,10 +84,10 @@ def build_model(model_name: str = MODEL_NAME):
             base_url=settings.ai_base_url,
             api_key=settings.portkey_api_key.strip(),
         ),
-        # The gateway resolves gpt-6-luna to an Azure deployment that rejects
-        # function tools on /v1/chat/completions unless reasoning is off:
-        #   "Function tools with reasoning_effort are not supported for
-        #    gpt-6-luna-global ... set reasoning_effort to 'none'."
-        # Every agent here uses tools, so this is required, not a preference.
+        # The gateway resolves this model to an Azure deployment that rejects
+        # function tools on /v1/chat/completions unless reasoning is off --
+        # it answers 400 with "Function tools with reasoning_effort are not
+        # supported ... set reasoning_effort to 'none'". Every agent here
+        # uses tools, so this is required, not a preference.
         settings=OpenAIChatModelSettings(openai_reasoning_effort="none"),
     )
